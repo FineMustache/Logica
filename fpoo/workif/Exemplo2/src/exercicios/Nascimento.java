@@ -23,7 +23,7 @@ public class Nascimento {
 					respValid = true;
 					break;
 				case "N":
-					nasc = nasc + 1;
+					nasc++;
 					respValid = true;
 					break;
 				default:
