@@ -20,10 +20,11 @@ public class Lista2_1 {
 		
 		System.out.println("Índice\tValor");
 		
-		for (int i = 0; i < nums.length; i++) {
-			System.out.println(i + "\t" + nums[i]);
+		for (int i = 0; i < nums.length; i++) {	
+			System.out.println(i + "\t" + nums[i]);	
 		}
 		
 	}
 
 }
+	
