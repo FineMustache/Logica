@@ -19,7 +19,7 @@ public class Contato {
 	}
 	
 	public String contatoTab() {
-		return id+"\t"+nome+"\t"+idade+"\t"+telefone;
+		return id+"\t\t"+nome+"\t\t"+idade+"\t\t"+telefone;
 	}
 
 }
