@@ -20,7 +20,7 @@ public class Notas {
 			soma += notas[i];
 		}
 		
-		return soma/3;
+		return soma/notas.length;
 	}
 
 }

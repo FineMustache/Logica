@@ -15,11 +15,10 @@ public class Aluno {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Aluno(int ra, String nome, Date nascimento, Notas[] notas) {
+	public Aluno(int ra, String nome, Date nascimento) {
 		this.ra = ra;
 		this.nome = nome;
 		this.nascimento = nascimento;
-		this.notas = notas;
 	}
 	
 	public int calcIdade() {

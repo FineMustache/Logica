@@ -32,26 +32,9 @@ public class Main {
 							String nasc = s.next();
 						    Date nascimento = new SimpleDateFormat("dd/MM/yyyy").parse(nasc);
 							
-						    Notas[] notas = new Notas[4];
-						    
-						    float[] nota = new float[3];
-						    
-							for (int j = 0; j < 4; j++) {
-								System.out.println("Digite o nome da matéria para inserir as notas");
-								String componente = s.next();
-								
-								for (int k = 0; k < 3; k++) {
-									System.out.println("Digite a " + (i+1) + "ª Nota:");
-									nota[k] = s.nextFloat();
-								}
-								
-								notas[j] = new Notas(componente, nota);
-								
-							}
-							
 							int ra = i+1;
 							
-							alunos[i] = new Aluno(ra, nome, nascimento, notas);
+							alunos[i] = new Aluno(ra, nome, nascimento);
 							
 							System.out.println("__________________________");
 							break;
@@ -62,8 +45,166 @@ public class Main {
 					}
 				}
 				break;
-
+				
+			case 2:
+				
+				System.out.println("Digite o RA do aluno cujo as notas serão cadastradas:");
+				int ra = s.nextInt();
+				
+				
+			    
+			    float[] nota = new float[3];
+			    
+			    for (int i = 0; i < alunos.length; i++) {
+			    	if (alunos[i] != null) {
+			    		if(alunos[i].ra == ra) {
+							Notas[] notas = alunos[i].notas;
+							for (int j = 0; j < 4; j++) {
+								if (notas[j] == null) {
+									System.out.println("Aluno(a): " + alunos[i].nome + ". Possui " + j + "/4 componentes cadastrados.\n");
+									
+									System.out.println("Digite o nome da matéria para inserir as notas");
+									String componente = s.next();
+									
+									for (int k = 0; k < 3; k++) {
+										System.out.println("Digite a " + (k+1) + "ª Nota:");
+										nota[k] = s.nextFloat();
+									}
+									
+									notas[j] = new Notas(componente, nota);
+									
+									alunos[i].notas = notas;
+									break;
+								}
+								if (j == 3) {
+									System.out.println("Limite de componentes atingido para " + alunos[i].nome + ". (4/4)");
+								}
+							}
+						}
+					}
+				}
+				
+			    break;
+			    
+			case 3:
+				
+				System.out.println("RA\tNome\tNascimento\tIdade");
+				for (int i = 0; i < alunos.length; i++) {
+					if (alunos[i] != null) {
+						System.out.println(alunos[i].ra + "\t" + alunos[i].nome + "\t" + new SimpleDateFormat("dd/MM/yyyy").format(alunos[i].nascimento) + "\t" + alunos[i].calcIdade());
+					}
+				}
+				break;
+				
+			case 4:
+				for (int i = 0; i < alunos.length; i++) {
+					if (alunos[i] != null) {
+						
+						System.out.println(alunos[i].nome);
+						
+						System.out.println("\tComp.\tNota 1\tNota 2\tNota 3\tMédia\n");
+						for (int j = 0; j < alunos[i].notas.length; j++) {
+							System.out.print("\t" + alunos[i].notas[j].componente);
+							for (int j2 = 0; j2 < alunos[i].notas[j].notas.length; j2++) {
+								System.out.print("\t" + alunos[i].notas[j].notas[j2]);
+							}
+							if(alunos[i].notas[j].obterMedia() <= 50) {
+								System.out.printf("\t|%.2f|", alunos[i].notas[j].obterMedia());
+								System.out.println("\n");
+							} else {
+								System.out.printf("\t%.2f", alunos[i].notas[j].obterMedia());
+								System.out.println("\n");
+							}
+						}
+						System.out.println(alunos[i].obterConceito());
+						System.out.println("\n");
+					}
+					
+				}
+				
+				break;
+				
+			case 5:
+				
+				System.out.println("Digite o RA do aluno que deseja buscar:");
+				int id = s.nextInt();
+				
+				System.out.println("\nRA\tNome\tNascimento\tIdade");
+				
+				for (int i = 0; i < alunos.length; i++) {
+					if(alunos[i] != null && alunos[i].ra == id) {
+						System.out.println(alunos[i].ra + "\t" + alunos[i].nome + "\t" + new SimpleDateFormat("dd/MM/yyyy").format(alunos[i].nascimento) + "\t" + alunos[i].calcIdade());
+					}
+				}
+				
+				break;
+				
+			case 6:
+				
+				System.out.println("Alunos APROVADOS:");
+				
+				for (int i = 0; i < alunos.length; i++) {
+					if (alunos[i] != null && alunos[i].obterConceito().equals("Aluno(a) " + alunos[i].nome + " foi APROVADO!")) {
+						
+						System.out.println(alunos[i].nome);
+						
+						System.out.println("\tComp.\tNota 1\tNota 2\tNota 3\tMédia\n");
+						for (int j = 0; j < alunos[i].notas.length; j++) {
+							System.out.print("\t" + alunos[i].notas[j].componente);
+							for (int j2 = 0; j2 < alunos[i].notas[j].notas.length; j2++) {
+								System.out.print("\t" + alunos[i].notas[j].notas[j2]);
+							}
+							System.out.printf("\t%.2f", alunos[i].notas[j].obterMedia());
+							System.out.println("\n");
+						}
+						System.out.println(alunos[i].obterConceito());
+						System.out.println("\n");
+					}
+				}
+				
+				break;
+				
+			case 7:
+				
+				System.out.println("Alunos REPROVADOS:");
+				
+				for (int i = 0; i < alunos.length; i++) {
+					if (alunos[i] != null && alunos[i].obterConceito().equals("Aluno(a) " + alunos[i].nome + " foi REPROVADO!")) {
+						
+						System.out.println(alunos[i].nome);
+						
+						System.out.println("\tComp.\tNota 1\tNota 2\tNota 3\tMédia\n");
+						for (int j = 0; j < alunos[i].notas.length; j++) {
+							System.out.print("\t" + alunos[i].notas[j].componente);
+							for (int j2 = 0; j2 < alunos[i].notas[j].notas.length; j2++) {
+								System.out.print("\t" + alunos[i].notas[j].notas[j2]);
+							}
+							if(alunos[i].notas[j].obterMedia() <= 50) {
+								System.out.printf("\t|%.2f|", alunos[i].notas[j].obterMedia());
+								System.out.println("\n");
+							} else {
+								System.out.printf("\t%.2f", alunos[i].notas[j].obterMedia());
+								System.out.println("\n");
+							}
+							
+						}
+						System.out.println(alunos[i].obterConceito());
+						System.out.println("\n");
+					}
+				}
+				
+				break;
+				
+			case 8:
+				
+				System.out.println("Adeus :D");
+				
+				break;
+			
 			default:
+				
+				System.out.println("Opção Inválida");
+				
 				break;
 			}
 		}
