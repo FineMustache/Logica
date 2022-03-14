@@ -1,8 +1,9 @@
-package notas;
+package modelo;
 
 import java.time.Period;
 import java.util.Date;
-import notas.Notas;
+
+import modelo.Notas;
 
 public class Aluno {
 	
@@ -21,6 +22,7 @@ public class Aluno {
 		this.nascimento = nascimento;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public int calcIdade() {
 		java.util.Date agora = new java.util.Date();  
 

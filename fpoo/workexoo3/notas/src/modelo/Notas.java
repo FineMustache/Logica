@@ -1,4 +1,4 @@
-package notas;
+package modelo;
 
 public class Notas {
 	
