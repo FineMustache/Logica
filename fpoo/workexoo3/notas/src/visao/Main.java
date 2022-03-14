@@ -220,6 +220,7 @@ public class Main {
 		}
 	}
 	
+	
 	public static void listarNotas() {
 		for (int i = 0; i < alunos.length; i++) {
 			if (alunos[i] != null) {
