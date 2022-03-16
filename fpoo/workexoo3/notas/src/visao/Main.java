@@ -99,38 +99,13 @@ public class Main {
 				
 			case 6:
 				
-				
+				listarAprovados();
 				
 				break;
 				
 			case 7:
 				
-				System.out.println("Alunos REPROVADOS:");
-				
-				for (int i = 0; i < alunos.length; i++) {
-					if (alunos[i] != null && alunos[i].obterConceito().equals("Aluno(a) " + alunos[i].nome + " foi REPROVADO!")) {
-						
-						System.out.println(alunos[i].nome);
-						
-						System.out.println("\tComp.\tNota 1\tNota 2\tNota 3\tMédia\n");
-						for (int j = 0; j < alunos[i].notas.length; j++) {
-							System.out.print("\t" + alunos[i].notas[j].componente);
-							for (int j2 = 0; j2 < alunos[i].notas[j].notas.length; j2++) {
-								System.out.print("\t" + alunos[i].notas[j].notas[j2]);
-							}
-							if(alunos[i].notas[j].obterMedia() <= 50) {
-								System.out.printf("\t|%.2f|", alunos[i].notas[j].obterMedia());
-								System.out.println("\n");
-							} else {
-								System.out.printf("\t%.2f", alunos[i].notas[j].obterMedia());
-								System.out.println("\n");
-							}
-							
-						}
-						System.out.println(alunos[i].obterConceito());
-						System.out.println("\n");
-					}
-				}
+				listarReprovados();
 				
 				break;
 				
@@ -264,6 +239,60 @@ public class Main {
 			}
 		}
 		return null;
+	}
+	
+	public static void listarAprovados() {
+		System.out.println("Alunos APROVADOS:");
+		
+		for (int i = 0; i < alunos.length; i++) {
+			if (alunos[i] != null && alunos[i].obterConceito().equals("Aluno(a) " + alunos[i].nome + " foi APROVADO!")) {
+				
+				System.out.println(alunos[i].nome);
+				
+				System.out.println("\tComp.\tNota 1\tNota 2\tNota 3\tMédia\n");
+				for (int j = 0; j < alunos[i].notas.length; j++) {
+					System.out.print("\t" + alunos[i].notas[j].componente);
+					for (int j2 = 0; j2 < alunos[i].notas[j].notas.length; j2++) {
+						System.out.print("\t" + alunos[i].notas[j].notas[j2]);
+					}
+					
+					System.out.printf("\t%.2f", alunos[i].notas[j].obterMedia());
+					System.out.println("\n");
+					
+				}
+				System.out.println(alunos[i].obterConceito());
+				System.out.println("\n");
+			}
+		}
+	}
+	
+	public static void listarReprovados() {
+		System.out.println("Alunos REPROVADOS:");
+		
+		for (int i = 0; i < alunos.length; i++) {
+			if (alunos[i] != null && alunos[i].obterConceito().equals("Aluno(a) " + alunos[i].nome + " foi REPROVADO!")) {
+				
+				System.out.println(alunos[i].nome);
+				
+				System.out.println("\tComp.\tNota 1\tNota 2\tNota 3\tMédia\n");
+				for (int j = 0; j < alunos[i].notas.length; j++) {
+					System.out.print("\t" + alunos[i].notas[j].componente);
+					for (int j2 = 0; j2 < alunos[i].notas[j].notas.length; j2++) {
+						System.out.print("\t" + alunos[i].notas[j].notas[j2]);
+					}
+					if(alunos[i].notas[j].obterMedia() <= 50) {
+						System.out.printf("\t|%.2f|", alunos[i].notas[j].obterMedia());
+						System.out.println("\n");
+					} else {
+						System.out.printf("\t%.2f", alunos[i].notas[j].obterMedia());
+						System.out.println("\n");
+					}
+					
+				}
+				System.out.println(alunos[i].obterConceito());
+				System.out.println("\n");
+			}
+		}
 	}
 
 }
