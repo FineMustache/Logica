@@ -1,18 +1,17 @@
 package visao;
 
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.Date;
 import java.util.Scanner;
 
 import modelo.Aparelho;
-import modelo.Veiculo;
 
 public class Menu {
 	
 	private static Scanner scan = new Scanner(System.in);
 	private static Aparelho[] aparelhos = new Aparelho[10];
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		int op = 0;
 		
 		while (op != 3) {
@@ -41,7 +40,7 @@ public class Menu {
 
 	}
 	
-	public static void cadastrarAparelho() {
+	public static void cadastrarAparelho() throws ParseException {
 		for (int i = 0; i < aparelhos.length; i++) {
 			if (aparelhos[9] == null) {
 				if(aparelhos[i] == null) {
@@ -59,13 +58,10 @@ public class Menu {
 					
 					Date dataAquisicao = new SimpleDateFormat("dd/MM/yyyy").parse(dataAq);
 					
-					System.out.println("Digite o ano de fabricação do veículo");
-					int anoFabricacao = scan.nextInt();
+					System.out.println("Digite o valor da aquisição do aparelho");
+					double valorAquisicao = scan.nextDouble();
 					
-					System.out.println("Digite a cor do veículo");
-					String cor = scan.next();
-					
-					aparelhos[i] = new Aparelho(placa, marca, modelo, anoModelo, anoFabricacao, cor);
+					aparelhos[i] = new Aparelho(nome, tipoExercicio, grupoMuscular, dataAquisicao, valorAquisicao);
 					
 					System.out.println("\n\nVeículo Cadastrado com SUCESSO!");
 					break;
@@ -73,6 +69,20 @@ public class Menu {
 			} else {
 				System.out.println("Limite Excedido (10/10)");
 			}
+		}
+	}
+	
+	private static void listarAparelho() {
+		if (aparelhos[0] != null) {
+			System.out.println("NOME\tTIPO\tG.M.\tDT AQ\tVL AQ");
+			for (int i = 0; i < aparelhos.length; i++) {
+			
+				if (aparelhos[i] != null) {
+					System.out.println(aparelhos[i].paraString());
+				}
+			}
+		} else {
+			System.out.println("Nenhum aparelho cadastrado\n\n");
 		}
 	}
 

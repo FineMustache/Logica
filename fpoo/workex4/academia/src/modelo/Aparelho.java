@@ -1,5 +1,6 @@
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Aparelho {
@@ -37,6 +38,6 @@ public class Aparelho {
 	}
 	
 	public String paraString() {
-		return nome + "\t" + tipoExercicio + "\t" + grupoMuscular + "\t" + dataAquisicao + "\t" + valorAquisicao;
+		return nome + "\t" + tipoExercicio + "\t" + grupoMuscular + "\t" + new SimpleDateFormat("dd/MM/yyyy").format(dataAquisicao) + "\t" + valorAquisicao;
 	}
 }
