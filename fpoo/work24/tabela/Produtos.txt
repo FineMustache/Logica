@@ -1,0 +1,4 @@
+1;Teclado;Digita aí e cala a boca meu;R$ 16,00
+2;Mouse Gamer;clica aí e cala a boca meu;R$ 800,99
+3;Celular;Joga frifariere;R$ 16,00
+4;Monitor;Ve as coisa aí;R$ 88,62
