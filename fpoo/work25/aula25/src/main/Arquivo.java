@@ -1,4 +1,4 @@
-package modelo;
+package main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,16 +8,13 @@ import java.util.ArrayList;
 
 public class Arquivo {
 
-	public void escrever(ArrayList<Integer> info, String fileName, boolean append) {
+	public void escrever(String info, String fileName, boolean append) {
 		
 		try {
-			FileWriter fw = new FileWriter(fileName + ".txt", append);
+			FileWriter fw = new FileWriter(fileName + ".csv", append);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			for (Integer num : info) {
-				bw.write(num.intValue() + "\r\n");
-			}
-			
+			bw.write(info + "\r\n");
 			
 			bw.close();
 			fw.close();
@@ -26,17 +23,17 @@ public class Arquivo {
 		}
 	}
 	
-	public ArrayList<Integer> ler (String fileName){
-		ArrayList<Integer> data = new ArrayList<Integer>();
+	public ArrayList<String> ler (String fileName){
+		ArrayList<String> data = new ArrayList<>();
 		
 		try {
-			FileReader fr = new FileReader(fileName + ".txt");
+			FileReader fr = new FileReader(fileName + ".csv");
 			BufferedReader br = new BufferedReader(fr);
 			
 			String linha = "";
 			
 			while((linha = br.readLine()) != null) {
-				data.add(Integer.parseInt(linha));
+				data.add(linha);
 			}
 			
 			br.close();

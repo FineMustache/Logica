@@ -1,36 +1,38 @@
-package modelo;
+package visao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Arquivo {
-
-	public void escrever(ArrayList<Integer> info, String fileName, boolean append) {
+public class Main {
+	private static Random r = new Random();
+	public static void main(String[] args) {
+		
+		String info = "";
+		
+		for (int i = 0; i < 10; i++) {
+			info = info + r.nextInt(100) + "\r\n";
+		}
 		
 		try {
-			FileWriter fw = new FileWriter(fileName + ".txt", append);
+			FileWriter fw = new FileWriter("entrada.txt", false);
 			BufferedWriter bw = new BufferedWriter(fw);
-			
-			for (Integer num : info) {
-				bw.write(num.intValue() + "\r\n");
-			}
-			
+	
+			bw.write(info);		
 			
 			bw.close();
 			fw.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-	}
-	
-	public ArrayList<Integer> ler (String fileName){
+		
 		ArrayList<Integer> data = new ArrayList<Integer>();
 		
 		try {
-			FileReader fr = new FileReader(fileName + ".txt");
+			FileReader fr = new FileReader("entrada.txt");
 			BufferedReader br = new BufferedReader(fr);
 			
 			String linha = "";
@@ -46,6 +48,15 @@ public class Arquivo {
 			System.out.println(e.toString());
 		}
 		
-		return data;
+		data.sort(null);
+		
+		for (Integer num : data) {
+			
+			System.out.println(num);
+		}
+		
+		
+
 	}
+
 }
