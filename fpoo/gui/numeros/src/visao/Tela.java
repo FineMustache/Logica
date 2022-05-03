@@ -32,7 +32,7 @@ public class Tela extends JFrame{
 		rotulo1 = new JLabel("Nome:");
 		rotulo1.setBounds(20,20,100,20);
 		gerar = new JTextField();
-		gerar.setBounds(180,70,180,80);
+		gerar.setBounds(100,70,180,80);
 		gerar.setEditable(false);
 		
 		btnGerar = new JButton("Gerar Numeros");
