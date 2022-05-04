@@ -16,7 +16,11 @@ public class Pet {
 	private String telefone;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
+	
+	public Pet(int id) {
+		this.id = id;
+	}
+	
 	public Pet(int id, String especie, String nomePet, String raca, float peso, String nascimento, String nomeDono,
 			String telefone) {
 		this.id = id;
@@ -31,6 +35,22 @@ public class Pet {
 		}
 		this.nomeDono = nomeDono;
 		this.telefone = telefone;
+	}
+	
+	public Pet(String linha) {
+		String[] temp = linha.split(";");
+		this.id = Integer.parseInt(temp[0]);
+		this.especie = temp[1];
+		this.nomePet = temp[2];
+		this.raca = temp[3];
+		this.peso = Float.parseFloat(temp[4]);
+		try {
+			this.nascimento = sdf.parse(temp[5]);
+		} catch (ParseException e) {
+			System.out.println(e.toString());
+		}
+		this.nomeDono = temp[6];
+		this.telefone = temp[7];
 	}
 	
 	public int obterIdade() {

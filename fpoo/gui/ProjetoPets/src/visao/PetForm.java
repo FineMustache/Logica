@@ -6,31 +6,44 @@ package visao;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 import controle.PetProcess;
+import modelo.Pet;
+import modelo.PetsTableModel;
 
 /**
  *
  * @author des
  */
 public class PetForm extends javax.swing.JFrame {
-	
+    
+    private PetsTableModel model;
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Creates new form Frame
      * @throws IOException 
      */
     public PetForm() throws IOException {
-    	
+    	model = new PetsTableModel(PetProcess.pets);
         initComponents();
     }
     
@@ -38,6 +51,7 @@ public class PetForm extends javax.swing.JFrame {
     private int autoId = 1;
     private BufferedImage[] myPicture = {ImageIO.read(new File("img\\cururu.jpg")), ImageIO.read(new File("img\\gato.jpg")), ImageIO.read(new File("img\\macaco.png")), ImageIO.read(new File("img\\papagaio.jpg")), ImageIO.read(new File("img\\mussa.jpg"))};
     private ImageIcon icon;
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,68 +63,66 @@ public class PetForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        tfId = new javax.swing.JLabel();
-        tfEspecie = new javax.swing.JLabel();
-        tfRaca = new javax.swing.JLabel();
-        tfNomePet = new javax.swing.JLabel();
-        tfPeso = new javax.swing.JLabel();
-        tfNasc = new javax.swing.JLabel();
-        tfDono = new javax.swing.JLabel();
-        tfTel = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        lbId = new javax.swing.JLabel();
+        lbEspecie = new javax.swing.JLabel();
+        lbRaca = new javax.swing.JLabel();
+        lbNomePet = new javax.swing.JLabel();
+        lbPeso = new javax.swing.JLabel();
+        lbNasc = new javax.swing.JLabel();
+        lbDono = new javax.swing.JLabel();
+        lbTel = new javax.swing.JLabel();
+        tfId = new javax.swing.JTextField();
+        tfId.setEditable(false);
+        tfId.setText(String.format("%d", PetProcess.pets.size() + 1));
+        tfRaca = new javax.swing.JTextField();
+        tfNomePet = new javax.swing.JTextField();
+        tfNasc = new javax.swing.JTextField();
+        tfPeso = new javax.swing.JTextField();
+        tfDono = new javax.swing.JTextField();
+        tfTel = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton4.setText("Cadastrar");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tfId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfId.setText("ID");
+        lbId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbId.setText("ID");
 
-        tfEspecie.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfEspecie.setText("Espécie");
+        lbEspecie.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbEspecie.setText("Espécie");
 
-        tfRaca.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfRaca.setText("Raça");
-        tfRaca.setToolTipText("");
+        lbRaca.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbRaca.setText("Raça");
+        lbRaca.setToolTipText("");
 
-        tfNomePet.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfNomePet.setText("Nome");
-        tfNomePet.setToolTipText("");
+        lbNomePet.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbNomePet.setText("Nome");
+        lbNomePet.setToolTipText("");
 
-        tfPeso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfPeso.setText("Peso");
-        tfPeso.setToolTipText("");
+        lbPeso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbPeso.setText("Peso");
+        lbPeso.setToolTipText("");
 
-        tfNasc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfNasc.setText("Nascimento");
-        tfNasc.setToolTipText("");
+        lbNasc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbNasc.setText("Nascimento");
+        lbNasc.setToolTipText("");
 
-        tfDono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfDono.setText("Dono");
-        tfDono.setToolTipText("");
+        lbDono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbDono.setText("Dono");
+        lbDono.setToolTipText("");
 
-        tfTel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfTel.setText("Telefone");
-        tfTel.setToolTipText("");
+        lbTel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbTel.setText("Telefone");
+        lbTel.setToolTipText("");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cachorro", "Gato", "Macaco", "Papagaio", "4 Reais de Mussarela" }));
 
@@ -122,32 +134,32 @@ public class PetForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(tfId)
+                        .addComponent(lbId)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(tfNomePet)
+                        .addComponent(lbNomePet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfNomePet, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfPeso)
-                            .addComponent(tfNasc)
+                            .addComponent(lbPeso)
+                            .addComponent(lbNasc)
+                            .addComponent(lbDono)
+                            .addComponent(lbTel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfTel, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                             .addComponent(tfDono)
-                            .addComponent(tfTel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(jTextField7)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField6)))
+                            .addComponent(tfNasc)
+                            .addComponent(tfPeso)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfRaca)
-                            .addComponent(tfEspecie))
+                            .addComponent(lbRaca)
+                            .addComponent(lbEspecie))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                            .addComponent(tfRaca, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -156,50 +168,52 @@ public class PetForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfId)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbId)
+                    .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfEspecie)
+                    .addComponent(lbEspecie)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfRaca)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbRaca)
+                    .addComponent(tfRaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfNomePet)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbNomePet)
+                    .addComponent(tfNomePet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfPeso)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbPeso)
+                    .addComponent(tfPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfNasc)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbNasc)
+                    .addComponent(tfNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfDono)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbDono)
+                    .addComponent(tfDono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfTel)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbTel)
+                    .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Cadastrar");
+        btnCadastrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCadastrar.setText("Cadastrar");
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setText("Buscar");
+        btnBuscar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnBuscar.setText("Buscar");
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setText("Alterar");
+        btnAlterar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton5.setText("Excluir");
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
 
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         alternarImagens(0);
@@ -213,10 +227,10 @@ public class PetForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(59, 59, 59))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,43 +240,19 @@ public class PetForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(btnCadastrar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnBuscar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnAlterar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            preencheTabela(),
-            new String [] {
-                "ID", "Espécie", "Nome do Pet", "Raça", "Peso", "Idade", "Nome do Dono", "Tel."
-            }
-        ) {
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        
+        jTable1.setModel(model);
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -324,12 +314,27 @@ public class PetForm extends javax.swing.JFrame {
                 }
             }
         });
+        
+        btnCadastrar.addActionListener((ActionListener) new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		cadastrar();
+        	}
+        });
+        
+        btnBuscar.addActionListener((ActionListener) new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		buscar();
+        	}
+        });
     }// </editor-fold>                        
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+    	
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -357,6 +362,7 @@ public class PetForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+                	PetProcess.abrir();
 					new PetForm().setVisible(true);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -365,71 +371,105 @@ public class PetForm extends javax.swing.JFrame {
             }
         });
         
-        PetProcess.carregarTestes();
+     
     }
     
     
 
     // Variables declaration - do not modify                     
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel tfId;
+    private javax.swing.JLabel lbId;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel tfEspecie;
-    private javax.swing.JLabel tfRaca;
-    private javax.swing.JLabel tfNomePet;
-    private javax.swing.JLabel tfPeso;
-    private javax.swing.JLabel tfNasc;
-    private javax.swing.JLabel tfDono;
-    private javax.swing.JLabel tfTel;
+    private javax.swing.JLabel lbEspecie;
+    private javax.swing.JLabel lbRaca;
+    private javax.swing.JLabel lbNomePet;
+    private javax.swing.JLabel lbPeso;
+    private javax.swing.JLabel lbNasc;
+    private javax.swing.JLabel lbDono;
+    private javax.swing.JLabel lbTel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField tfId;
+    private javax.swing.JTextField tfRaca;
+    private javax.swing.JTextField tfNomePet;
+    private javax.swing.JTextField tfNasc;
+    private javax.swing.JTextField tfPeso;
+    private javax.swing.JTextField tfDono;
+    private javax.swing.JTextField tfTel;
     
     private void alternarImagens(int indice) {
     	icon = new ImageIcon(new ImageIcon(myPicture[indice]).getImage().getScaledInstance(190, 200, Image.SCALE_FAST));
     	jLabel10.setIcon(icon);
     }
-    
-    private Object[][] preencheTabela(){
-    	
-    	Object[][] aux = new Object[PetProcess.pets.size()][8];
-    	
-    	for (int i = 0; i < PetProcess.pets.size(); i++) {
-			aux[i][0] = PetProcess.pets.get(i).getId();
-			aux[i][1] = PetProcess.pets.get(i).getEspecie();
-			aux[i][2] = PetProcess.pets.get(i).getNomePet();
-			aux[i][3] = PetProcess.pets.get(i).getRaca();
-			aux[i][4] = PetProcess.pets.get(i).getPeso();
-			aux[i][5] = PetProcess.pets.get(i).obterIdade();
-			aux[i][6] = PetProcess.pets.get(i).getNomeDono();
-			aux[i][7] = PetProcess.pets.get(i).getTelefone();
-		}
-    
-    	
-    	return aux;
-    }
 	
     private void cadastrar() {
-    	if (tfNomePet.getText().length() !=0 && tfRaca.getText().length() != 0 && tfNascimento.getText().length() != 0 && tfNomeDono.getText().length() != 0 && tfTelefone.getText().length() != 0) {
-			PetProcess.pets.add(new Pet(autoId, cbEspecie.getSelectedItem().toString(), tfNomePet.getText(), tfRaca.getText(), Float.parseFloat(tfPeso.getText()), tfNascimento.getText(), tfNomeDono.getText(), tfTelefone.getText()));
-			preencherAreaDeTexto();
+    	System.out.println(tfPeso.getText());
+    	System.out.println(tfNasc.getText());
+    	if (tfNomePet.getText().length() !=0 && tfRaca.getText().length() != 0 && tfPeso.getText().length() != 0 && tfDono.getText().length() != 0 && tfTel.getText().length() != 0) {
+			PetProcess.pets.add(new Pet(PetProcess.pets.size() + 1, jComboBox1.getSelectedItem().toString(), tfNomePet.getText(), tfRaca.getText(), Float.parseFloat(tfPeso.getText()), (String) tfNasc.getText(), tfDono.getText(), tfTel.getText()));
+			model.fireTableRowsInserted(PetProcess.pets.size() - 1, PetProcess.pets.size() - 1);
+			resetInputs();
 				
 		} else {
-			JOptionPane.showConfirmDialog(this, "Favor Preencher todos as informações");
+			JOptionPane.showMessageDialog(this, "Favor Preencher todas as informações");
 		}
     }
+    
+    int obterIndiceEspecie(String especie) {
+    	switch (especie) {
+		case "Cachorro": return 0;
+		case "Gato": return 1;
+		case "Macaco": return 2;
+		case "Papagaio": return 3;
+		case "4 reais de mussarela": return 4;
+		default: return -1;
+		}
+    }
+    
+    private void buscar() {
+    	String text = JOptionPane.showInputDialog(this, "Digite o ID do Pet a ser buscado");
+    	int id = Integer.parseInt(text);
+    		
+    		for (Pet p : PetProcess.pets) {
+				if (p.getId() == id) {
+					int index = PetProcess.pets.indexOf(p);
+					tfId.setText(String.format("%d", PetProcess.pets.get(index).getId()));
+			    	jComboBox1.setSelectedIndex(obterIndiceEspecie(PetProcess.pets.get(index).getEspecie()));
+			    	tfRaca.setText(PetProcess.pets.get(index).getRaca());
+			    	tfNomePet.setText(PetProcess.pets.get(index).getNomePet());
+			    	tfNasc.setText(new SimpleDateFormat("dd/MM/yyyy").format(PetProcess.pets.get(index).getNascimento()));
+			    	tfPeso.setText(String.format("%.2f", PetProcess.pets.get(index).getPeso()));
+			    	tfDono.setText(PetProcess.pets.get(index).getNomeDono());
+			    	tfTel.setText(PetProcess.pets.get(index).getTelefone());
+			    	
+			    	btnCadastrar.setEnabled(false);
+			    	btnAlterar.setEnabled(true);
+			    	btnExcluir.setEnabled(true);
+				}
+			}
+    		
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(this, "Id inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+//		}
+    	
+    }
+    
+    private void resetInputs() {
+    	tfId.setText(String.format("%d", PetProcess.pets.size() + 1));
+    	jComboBox1.setSelectedIndex(0);
+    	tfRaca.setText("");
+    	tfNomePet.setText("");
+    	tfNasc.setText("");
+    	tfPeso.setText("");
+    	tfDono.setText("");
+    	tfTel.setText("");
+    }
+
 }
