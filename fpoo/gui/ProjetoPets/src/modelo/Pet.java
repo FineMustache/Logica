@@ -43,7 +43,7 @@ public class Pet {
 		this.especie = temp[1];
 		this.nomePet = temp[2];
 		this.raca = temp[3];
-		this.peso = Float.parseFloat(temp[4]);
+		this.peso = Float.parseFloat(temp[4].replace(",", "."));
 		try {
 			this.nascimento = sdf.parse(temp[5]);
 		} catch (ParseException e) {
@@ -121,5 +121,8 @@ public class Pet {
 		this.telefone = telefone;
 	}
 	
+	public String toCSV() {
+		return this.id + ";" + this.especie + ";" + this.nomePet + ";" + this.raca + ";" + String.format("%.2f", this.peso).replace(".", ",") + ";" + sdf.format(this.nascimento) + ";" + this.nomeDono + ";" + this.telefone;
+	}
 	
 }

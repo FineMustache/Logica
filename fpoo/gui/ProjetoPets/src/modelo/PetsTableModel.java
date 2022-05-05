@@ -138,4 +138,8 @@ public class PetsTableModel extends AbstractTableModel {
         //este método é que notifica a tabela que houve alteração de dados
         fireTableDataChanged();
     }
+    
+    public void refresh() {
+    	fireTableDataChanged();
+    }
 }

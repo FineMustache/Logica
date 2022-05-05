@@ -1,8 +1,11 @@
 package controle;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import modelo.Pet;
@@ -10,6 +13,7 @@ import modelo.Pet;
 public class DAO {
 	
 	private BufferedReader br;
+	private BufferedWriter bw;
 	private String path =  "./dados/pets.csv";
 	
 	public ArrayList<Pet> ler(){
@@ -30,5 +34,20 @@ public class DAO {
 		}
 		
 		return linhas;
+	}
+	
+	public void escrever(ArrayList<Pet> linhas) {
+		try {
+			bw = new BufferedWriter(new FileWriter(path));
+			
+			for (Pet p : linhas) {
+				bw.write(p.toCSV() + "\r\n");
+			}
+			
+			
+			bw.close();
+		} catch (IOException e) {
+			System.out.println(e.toString());
+		}	
 	}
 }

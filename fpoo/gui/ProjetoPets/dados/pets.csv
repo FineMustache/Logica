@@ -1,5 +1,7 @@
-1;Cachorro;Toto;Vira Latas;26;01/01/2015;Joaquin;(19)98787-7171
-2;Gato;Sett;SRD;5;28/06/2020;Luiza;(19)98708-7490
-3;Macaco;Denis;Sagui;1;01/05/2019;Paulo;(19)97541-8899
-4;Papagaio;Mahi;Verdadeiro;26;24/10/2009;Renato;(19)94517-7712
-5;4 reais de mussarela;Naldo;Tirolez;1;30/04/2022;Guilherme;(19)98452-6978
+1;Cachorro;Toto;Vira Latas;26,00;01/01/2015;Joaquin;(19)98787-7171
+3;Macaco;Denis;Sagui;1,00;01/05/2019;Paulo;(19)97541-8899
+4;Papagaio;Mahi;Verdadeiro;26,00;24/10/2009;Renato;(19)94517-7712
+5;4 reais de mussarela;Naldo;Tirolez;1,00;30/04/2022;Guilherme;(19)98452-6978
+6;Gato;Gatx;SRD;5,00;25/06/2014;Felimpe;(11)98745-3217
+7;Cachorro;Thor;Pastor Alemão;10,00;19/12/1980;Felimpers;(19)19-19-19-19
+8;Macaco;macac;Sagui;0,50;25/02/1500;Guilherme Memes;12

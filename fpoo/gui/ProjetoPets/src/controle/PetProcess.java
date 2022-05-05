@@ -13,6 +13,11 @@ public class PetProcess {
 		pets = dao.ler();
 	}
 	
+	public static void salvar() {
+		dao.escrever(pets);
+		abrir();
+	}
+	
 	public static void carregarTestes() {
 		pets = new ArrayList<>();
 		

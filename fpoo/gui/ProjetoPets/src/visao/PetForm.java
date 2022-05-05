@@ -74,7 +74,7 @@ public class PetForm extends javax.swing.JFrame {
         lbTel = new javax.swing.JLabel();
         tfId = new javax.swing.JTextField();
         tfId.setEditable(false);
-        tfId.setText(String.format("%d", PetProcess.pets.size() + 1));
+        tfId.setText(String.format("%d", PetProcess.pets.get(PetProcess.pets.size()-1).getId() + 1));
         tfRaca = new javax.swing.JTextField();
         tfNomePet = new javax.swing.JTextField();
         tfNasc = new javax.swing.JTextField();
@@ -328,6 +328,20 @@ public class PetForm extends javax.swing.JFrame {
         		buscar();
         	}
         });
+        
+        btnAlterar.addActionListener((ActionListener) new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		alterar();
+        	}
+        });
+        
+        btnExcluir.addActionListener((ActionListener) new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		excluir();
+        	}
+        });
     }// </editor-fold>                        
 
     /**
@@ -410,11 +424,11 @@ public class PetForm extends javax.swing.JFrame {
     }
 	
     private void cadastrar() {
-    	System.out.println(tfPeso.getText());
-    	System.out.println(tfNasc.getText());
     	if (tfNomePet.getText().length() !=0 && tfRaca.getText().length() != 0 && tfPeso.getText().length() != 0 && tfDono.getText().length() != 0 && tfTel.getText().length() != 0) {
-			PetProcess.pets.add(new Pet(PetProcess.pets.size() + 1, jComboBox1.getSelectedItem().toString(), tfNomePet.getText(), tfRaca.getText(), Float.parseFloat(tfPeso.getText()), (String) tfNasc.getText(), tfDono.getText(), tfTel.getText()));
-			model.fireTableRowsInserted(PetProcess.pets.size() - 1, PetProcess.pets.size() - 1);
+			PetProcess.pets.add(new Pet(PetProcess.pets.get(PetProcess.pets.size()-1).getId() + 1, jComboBox1.getSelectedItem().toString(), tfNomePet.getText(), tfRaca.getText(), Float.parseFloat(tfPeso.getText().replace(",", ".")), (String) tfNasc.getText(), tfDono.getText(), tfTel.getText()));
+			PetProcess.salvar();
+			model.refresh();
+			jTable1.setModel(model = new PetsTableModel(PetProcess.pets));
 			resetInputs();
 				
 		} else {
@@ -428,14 +442,15 @@ public class PetForm extends javax.swing.JFrame {
 		case "Gato": return 1;
 		case "Macaco": return 2;
 		case "Papagaio": return 3;
-		case "4 reais de mussarela": return 4;
+		case "4 Reais de Mussarela": return 4;
 		default: return -1;
 		}
     }
     
     private void buscar() {
     	String text = JOptionPane.showInputDialog(this, "Digite o ID do Pet a ser buscado");
-    	int id = Integer.parseInt(text);
+    	try {
+    		int id = Integer.parseInt(text);
     		
     		for (Pet p : PetProcess.pets) {
 				if (p.getId() == id) {
@@ -455,14 +470,67 @@ public class PetForm extends javax.swing.JFrame {
 				}
 			}
     		
-//		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(this, "Id inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-//		}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Id inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
     	
     }
     
+    private void alterar() {
+    	if (tfNomePet.getText().length() !=0 && tfRaca.getText().length() != 0 && tfPeso.getText().length() != 0 && tfDono.getText().length() != 0 && tfTel.getText().length() != 0) {
+			Pet tempPet = new Pet(Integer.parseInt(tfId.getText()), jComboBox1.getSelectedItem().toString(), tfNomePet.getText(), tfRaca.getText(), Float.parseFloat(tfPeso.getText().replace(",", ".")), (String) tfNasc.getText(), tfDono.getText(), tfTel.getText());
+			for (Pet p : PetProcess.pets) {
+				if (p.getId() == tempPet.getId()) {
+					p.setId(tempPet.getId());
+					p.setEspecie(tempPet.getEspecie());
+					p.setNomePet(tempPet.getNomePet());
+					p.setRaca(tempPet.getRaca());
+					p.setPeso(tempPet.getPeso());
+					p.setNascimento(tempPet.getNascimento());
+					p.setNomeDono(tempPet.getNomeDono());
+					p.setTelefone(tempPet.getTelefone());
+				}
+			}
+			
+			if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja editar esse Pet?") == 0) {
+				PetProcess.salvar();
+				resetInputs();
+				
+				btnCadastrar.setEnabled(true);
+				btnAlterar.setEnabled(false);
+				btnExcluir.setEnabled(false);
+				model.refresh();
+				jTable1.setModel(model = new PetsTableModel(PetProcess.pets));
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Favor Preencher todas as informações");
+		}
+    }
+    
+    private void excluir() {
+    	if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse Pet?") == 0) {
+    		Pet petTemp = null;
+    		for (Pet p : PetProcess.pets) {
+    			if (p.getId() == Integer.parseInt(tfId.getText())) {
+    				petTemp = p;
+				}
+			}
+    		
+    		PetProcess.pets.remove(PetProcess.pets.indexOf(petTemp));
+    		
+			PetProcess.salvar();
+			resetInputs();
+			
+			btnCadastrar.setEnabled(true);
+			btnAlterar.setEnabled(false);
+			btnExcluir.setEnabled(false);
+			model.refresh();
+			jTable1.setModel(model = new PetsTableModel(PetProcess.pets));
+		}
+    }
+    
     private void resetInputs() {
-    	tfId.setText(String.format("%d", PetProcess.pets.size() + 1));
+    	tfId.setText(String.format("%d", PetProcess.pets.get(PetProcess.pets.size()-1).getId() + 1));
     	jComboBox1.setSelectedIndex(0);
     	tfRaca.setText("");
     	tfNomePet.setText("");
