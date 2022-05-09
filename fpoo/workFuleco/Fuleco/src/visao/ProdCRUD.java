@@ -7,17 +7,24 @@ package visao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import controle.ProdProcess;
+import modelo.ProdTableModel;
+import modelo.Produto;
 
 /**
  *
  * @author usuario
  */
 public class ProdCRUD extends javax.swing.JFrame {
-
+	
+	private ProdTableModel model;
     /**
      * Creates new form ProdCRUD
      */
     public ProdCRUD() {
+    	model = new ProdTableModel(ProdProcess.produtos);
         initComponents();
     }
 
@@ -55,29 +62,7 @@ public class ProdCRUD extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Nome", "Preço de Custo", "Preço de Venda", "Lucro", "Estoque"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jTable1.setModel(model);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
@@ -289,6 +274,7 @@ public class ProdCRUD extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+            	
                 new ProdCRUD().setVisible(true);
             }
         });

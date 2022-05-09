@@ -8,16 +8,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import controle.VendProcess;
+import modelo.Produto;
+import modelo.Venda;
+import modelo.VendaTableModel;
+
 /**
  *
  * @author usuario
  */
 public class VendCRUD extends javax.swing.JFrame {
-
+	
+	private VendaTableModel model;
+	
     /**
      * Creates new form VendCRUD
      */
     public VendCRUD() {
+    	model = new VendaTableModel(VendProcess.vendas);
         initComponents();
     }
 
@@ -53,14 +61,7 @@ public class VendCRUD extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "ID Produto", "Quantidade", "Preço Total", "Pagamento"
-            }
-        ));
+        jTable1.setModel(model);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N

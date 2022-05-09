@@ -14,6 +14,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import controle.ProdProcess;
+import controle.VendProcess;
+
 /**
  *
  * @author usuario
@@ -170,6 +173,8 @@ public class TelaInicial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+            	ProdProcess.abrir();
+            	VendProcess.abrir();
                 try {
 					new TelaInicial().setVisible(true);
 				} catch (IOException e) {
