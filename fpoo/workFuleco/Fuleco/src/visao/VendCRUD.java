@@ -4,7 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import controle.ProdProcess;
 import controle.VendProcess;
+import modelo.ProdTableModel;
 import modelo.Produto;
 import modelo.Venda;
 import modelo.VendaTableModel;
@@ -25,20 +31,25 @@ public class VendCRUD extends javax.swing.JFrame {
 		jTable1 = new javax.swing.JTable();
 		jPanel1 = new javax.swing.JPanel();
 		jLabel1 = new javax.swing.JLabel();
-		jTextField1 = new javax.swing.JTextField();
-		jTextField2 = new javax.swing.JTextField();
+		tfId = new javax.swing.JTextField();
+		tfId.setEnabled(false);
+		tfId.setText("" + (VendProcess.vendas.get(VendProcess.vendas.size() - 1).getId() + 1));
+		tfIdProd = new javax.swing.JTextField();
 		jLabel2 = new javax.swing.JLabel();
-		jTextField3 = new javax.swing.JTextField();
+		tfQtde = new javax.swing.JTextField();
 		jLabel3 = new javax.swing.JLabel();
 		jLabel4 = new javax.swing.JLabel();
-		jTextField4 = new javax.swing.JTextField();
+		tfPTotal = new javax.swing.JTextField();
+		tfPTotal.setEnabled(false);
 		jLabel5 = new javax.swing.JLabel();
-		jComboBox1 = new javax.swing.JComboBox<>();
+		cbPag = new javax.swing.JComboBox<>();
 		jPanel2 = new javax.swing.JPanel();
-		jButton1 = new javax.swing.JButton();
-		jButton2 = new javax.swing.JButton();
-		jButton3 = new javax.swing.JButton();
-		jButton4 = new javax.swing.JButton();
+		btnCadastrar = new javax.swing.JButton();
+		btnBuscar = new javax.swing.JButton();
+		btnAlterar = new javax.swing.JButton();
+		btnAlterar.setEnabled(false);
+		btnExcluir = new javax.swing.JButton();
+		btnExcluir.setEnabled(false);
 		btnVoltar = new javax.swing.JButton();
 		jLabel7 = new javax.swing.JLabel();
 
@@ -50,14 +61,14 @@ public class VendCRUD extends javax.swing.JFrame {
 		jLabel1.setFont(new java.awt.Font("sansserif", 0, 14));
 		jLabel1.setText("ID");
 
-		jTextField1.setFont(new java.awt.Font("sansserif", 0, 14));
+		tfId.setFont(new java.awt.Font("sansserif", 0, 14));
 
-		jTextField2.setFont(new java.awt.Font("sansserif", 0, 14));
+		tfIdProd.setFont(new java.awt.Font("sansserif", 0, 14));
 
 		jLabel2.setFont(new java.awt.Font("sansserif", 0, 14));
 		jLabel2.setText("ID Produto");
 
-		jTextField3.setFont(new java.awt.Font("sansserif", 0, 14));
+		tfQtde.setFont(new java.awt.Font("sansserif", 0, 14));
 
 		jLabel3.setFont(new java.awt.Font("sansserif", 0, 14));
 		jLabel3.setText("Quantidade");
@@ -65,13 +76,13 @@ public class VendCRUD extends javax.swing.JFrame {
 		jLabel4.setFont(new java.awt.Font("sansserif", 0, 14));
 		jLabel4.setText("Preço Total");
 
-		jTextField4.setFont(new java.awt.Font("sansserif", 0, 14));
+		tfPTotal.setFont(new java.awt.Font("sansserif", 0, 14));
 
 		jLabel5.setFont(new java.awt.Font("sansserif", 0, 14));
 		jLabel5.setText("Pagamento");
 
-		jComboBox1.setFont(new java.awt.Font("sansserif", 0, 14));
-		jComboBox1.setModel(
+		cbPag.setFont(new java.awt.Font("sansserif", 0, 14));
+		cbPag.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Dinheiro", "Crédito", "Debito", "Pix" }));
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -80,54 +91,54 @@ public class VendCRUD extends javax.swing.JFrame {
 				.addGroup(jPanel1Layout.createSequentialGroup().addGap(89, 89, 89).addGroup(jPanel1Layout
 						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
 						.addGroup(jPanel1Layout.createSequentialGroup().addComponent(jLabel1).addGap(18, 18, 18)
-								.addComponent(jTextField1))
+								.addComponent(tfId))
 						.addGroup(jPanel1Layout.createSequentialGroup().addComponent(jLabel2).addGap(18, 18, 18)
-								.addComponent(jTextField2))
+								.addComponent(tfIdProd))
 						.addGroup(jPanel1Layout.createSequentialGroup().addComponent(jLabel3).addGap(18, 18, 18)
-								.addComponent(jTextField3))
+								.addComponent(tfQtde))
 						.addGroup(jPanel1Layout.createSequentialGroup().addComponent(jLabel4).addGap(18, 18, 18)
-								.addComponent(jTextField4))
+								.addComponent(tfPTotal))
 						.addGroup(jPanel1Layout.createSequentialGroup().addComponent(jLabel5).addGap(18, 18, 18)
-								.addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(cbPag, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
 						.addContainerGap(100, Short.MAX_VALUE)));
 		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel1Layout.createSequentialGroup().addGap(23, 23, 23)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel1).addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(jLabel1).addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGap(18, 18, 18)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel2).addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(jLabel2).addComponent(tfIdProd, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGap(18, 18, 18)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel3).addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(jLabel3).addComponent(tfQtde, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGap(18, 18, 18)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel4).addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(jLabel4).addComponent(tfPTotal, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGap(18, 18, 18)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel5).addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(jLabel5).addComponent(cbPag, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
-		jButton1.setFont(new java.awt.Font("sansserif", 0, 14));
-		jButton1.setText("Cadastrar");
-		jButton1.setMaximumSize(new java.awt.Dimension(93, 25));
-		jButton1.setMinimumSize(new java.awt.Dimension(93, 25));
-		jButton1.setPreferredSize(new java.awt.Dimension(93, 25));
+		btnCadastrar.setFont(new java.awt.Font("sansserif", 0, 14));
+		btnCadastrar.setText("Cadastrar");
+		btnCadastrar.setMaximumSize(new java.awt.Dimension(93, 25));
+		btnCadastrar.setMinimumSize(new java.awt.Dimension(93, 25));
+		btnCadastrar.setPreferredSize(new java.awt.Dimension(93, 25));
 
-		jButton2.setFont(new java.awt.Font("sansserif", 0, 14));
-		jButton2.setText("Buscar");
+		btnBuscar.setFont(new java.awt.Font("sansserif", 0, 14));
+		btnBuscar.setText("Buscar");
 
-		jButton3.setFont(new java.awt.Font("sansserif", 0, 14));
-		jButton3.setText("Alterar");
+		btnAlterar.setFont(new java.awt.Font("sansserif", 0, 14));
+		btnAlterar.setText("Alterar");
 
-		jButton4.setFont(new java.awt.Font("sansserif", 0, 14));
-		jButton4.setText("Deletar");
+		btnExcluir.setFont(new java.awt.Font("sansserif", 0, 14));
+		btnExcluir.setText("Deletar");
 
 		btnVoltar.setFont(new java.awt.Font("sansserif", 0, 14));
 		btnVoltar.setText("Voltar");
@@ -140,27 +151,27 @@ public class VendCRUD extends javax.swing.JFrame {
 								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 										.addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
+										.addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
+										.addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
+										.addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
+										.addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 245,
 												javax.swing.GroupLayout.PREFERRED_SIZE))
 								.addGap(49, 49, 49)));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap()
-						.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+						.addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+						.addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+						.addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+						.addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18).addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,12 +220,209 @@ public class VendCRUD extends javax.swing.JFrame {
 				}
 			}
 		});
+		
+		btnCadastrar.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cadastrar();
+			}
+		});
+
+		btnBuscar.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				buscar();
+			}
+		});
+
+		btnAlterar.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				alterar();
+			}
+		});
+
+		btnExcluir.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				excluir();
+			}
+		});
+
+		tfQtde.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void warn() {
+
+				try {
+					int qtde = Integer.parseInt(tfQtde.getText().replace(",", "."));
+					double custo = 0d;
+					for (Produto p : ProdProcess.produtos) {
+						if(tfIdProd.getText() != null && Integer.parseInt(tfIdProd.getText()) == p.getId()) {
+							custo = p.getpVenda() * qtde;
+						} else {
+							tfPTotal.setText("Calculando...");
+						}
+					}
+
+					tfPTotal.setText(String.format("%.2f", custo));
+
+				} catch (Exception e) {
+					if (tfQtde.getText().length() == 0) {
+						tfPTotal.setText("");
+					} else {
+						tfPTotal.setText("Calculando...");
+					}
+
+				}
+
+			}
+		});
+	}
+	
+	private String getPag(int indice) {
+		switch (indice) {
+		case 0:
+			return "Dinheiro";
+			
+		case 1:
+			return "Crédito";
+			
+		case 2:
+			return "Débito";
+			
+		case 3:
+			return "Pix";
+			
+		default:
+			return "Outro";
+		}
 	}
 
 	private void voltar() throws IOException {
 		TelaInicial formTI = new TelaInicial();
 		formTI.setVisible(true);
 		this.setVisible(false);
+	}
+	
+	private void cadastrar() {
+		if (tfIdProd.getText().length() != 0 || tfQtde.getText().length() != 0 || tfPTotal.getText().length() != 0) {
+			String produto = "";
+			for (Produto p : ProdProcess.produtos) {
+				if(Integer.parseInt(tfIdProd.getText()) == p.getId()) {
+					produto = p.getNome();
+				}
+			}
+			
+			if (JOptionPane.showConfirmDialog(this, "Deseja mesmo cadastrar a venda do produto " + produto + "?") == 0) {
+				VendProcess.vendas.add(new Venda(VendProcess.vendas.get(VendProcess.vendas.size() - 1).getId() + 1, Integer.parseInt(tfIdProd.getText()), Integer.parseInt(tfQtde.getText()), Double.parseDouble(tfPTotal.getText().replace(",", ".")), getPag(cbPag.getSelectedIndex())));
+				model.refresh();
+				jTable1.setModel(model = new VendaTableModel(VendProcess.vendas));
+				VendProcess.salvar();
+				
+				resetInputs();
+			} else {
+				JOptionPane.showMessageDialog(this, "Cadastro Cancelado");
+			}
+			
+		}
+	}
+
+	private void buscar() {
+		String text = JOptionPane.showInputDialog(this, "Digite o ID do produto a ser buscado");
+
+		try {
+			int id = Integer.parseInt(text);
+
+			for (Produto p : ProdProcess.produtos) {
+				if (id == p.getId()) {
+					tfId.setText("" + id);
+					tfNome.setText(p.getNome());
+					tfPCusto.setText(String.format("%.2f", p.getpCusto()));
+					tfPVenda.setText(String.format("%.2f", p.getpVenda()));
+					tfLucro.setText(String.format("%.2f", p.getLucro()));
+					tfEstoque.setText(p.getEstoque());
+
+					btnCadastrar.setEnabled(false);
+					btnAlterar.setEnabled(true);
+					btnExcluir.setEnabled(true);
+				}
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void alterar() {
+		if (tfNome.getText().length() != 0 || tfPCusto.getText().length() != 0 || tfPVenda.getText().length() != 0
+				|| tfLucro.getText().length() != 0 || tfEstoque.getText().length() != 0) {
+
+			int indice = -1;
+
+			for (Produto p : ProdProcess.produtos) {
+				if (Integer.parseInt(tfId.getText()) == p.getId()) {
+					indice = ProdProcess.produtos.indexOf(p);
+				}
+			}
+
+			ProdProcess.produtos.get(indice).setNome(tfNome.getText());
+			ProdProcess.produtos.get(indice).setpCusto(Double.parseDouble(tfPCusto.getText().replace(",", ".")));
+			ProdProcess.produtos.get(indice).setpVenda(Double.parseDouble(tfPVenda.getText().replace(",", ".")));
+			ProdProcess.produtos.get(indice).setLucro(Double.parseDouble(tfLucro.getText().replace(",", ".")));
+			ProdProcess.produtos.get(indice).setEstoque(tfEstoque.getText());
+
+			ProdProcess.salvar();
+			model.refresh();
+			jTable1.setModel(model = new ProdTableModel(ProdProcess.produtos));
+
+			btnCadastrar.setEnabled(true);
+			btnAlterar.setEnabled(false);
+			btnExcluir.setEnabled(false);
+
+			resetInputs();
+		}
+	}
+
+	private void excluir() {
+		if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse Produto?") == 0) {
+			Produto prodTemp = null;
+			for (Produto p : ProdProcess.produtos) {
+				if (p.getId() == Integer.parseInt(tfId.getText())) {
+					prodTemp = p;
+				}
+			}
+
+			ProdProcess.produtos.remove(ProdProcess.produtos.indexOf(prodTemp));
+
+			ProdProcess.salvar();
+			resetInputs();
+
+			btnCadastrar.setEnabled(true);
+			btnAlterar.setEnabled(false);
+			btnExcluir.setEnabled(false);
+			model.refresh();
+			jTable1.setModel(model = new ProdTableModel(ProdProcess.produtos));
+		}
+	}
+
+	private void resetInputs() {
+		tfIdProd.setText("");
+		tfQtde.setText("");
+		tfPTotal.setText("");
+		cbPag.setSelectedIndex(0);
+
+		tfId.setText("" + (VendProcess.vendas.get(VendProcess.vendas.size() - 1).getId() + 1));
 	}
 
 	public static void main(String args[]) {
@@ -243,12 +451,12 @@ public class VendCRUD extends javax.swing.JFrame {
 		});
 	}
 
-	private javax.swing.JButton jButton1;
-	private javax.swing.JButton jButton2;
-	private javax.swing.JButton jButton3;
-	private javax.swing.JButton jButton4;
+	private javax.swing.JButton btnCadastrar;
+	private javax.swing.JButton btnBuscar;
+	private javax.swing.JButton btnAlterar;
+	private javax.swing.JButton btnExcluir;
 	private javax.swing.JButton btnVoltar;
-	private javax.swing.JComboBox<String> jComboBox1;
+	private javax.swing.JComboBox<String> cbPag;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
@@ -259,8 +467,8 @@ public class VendCRUD extends javax.swing.JFrame {
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JTable jTable1;
-	private javax.swing.JTextField jTextField1;
-	private javax.swing.JTextField jTextField2;
-	private javax.swing.JTextField jTextField3;
-	private javax.swing.JTextField jTextField4;
+	private javax.swing.JTextField tfId;
+	private javax.swing.JTextField tfIdProd;
+	private javax.swing.JTextField tfQtde;
+	private javax.swing.JTextField tfPTotal;
 }
