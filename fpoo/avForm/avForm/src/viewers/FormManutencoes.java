@@ -4,7 +4,15 @@
  */
 package viewers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import controllers.ProcessaManutencoes;
+import models.Manutencao;
 import models.ManutencaoTableModel;
 
 /**
@@ -14,6 +22,7 @@ import models.ManutencaoTableModel;
 public class FormManutencoes extends javax.swing.JFrame {
 	
 	private ManutencaoTableModel model;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
     /**
      * Creates new form Frame
@@ -41,17 +50,19 @@ public class FormManutencoes extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
+        tfData = new javax.swing.JTextField();
+        tfCusto = new javax.swing.JTextField();
+        tfTotal = new javax.swing.JTextField();
+        tfTempo = new javax.swing.JTextField();
+        cbEquipamento = new javax.swing.JComboBox<>();
+        tfId = new javax.swing.JTextField();
+        tfId.setEnabled(false);
+        tfId.setText(String.format("%d", ProcessaManutencoes.manutencoes.size() + 1));
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -87,19 +98,19 @@ public class FormManutencoes extends javax.swing.JFrame {
         jLabel6.setText("TOTAL");
         jLabel6.setToolTipText("");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfData.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfCusto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jTextField5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextField5.setEnabled(false);
+        tfTotal.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfTotal.setEnabled(false);
 
-        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfTempo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Esteira", "Exaustor", "Computador" }));
+        cbEquipamento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cbEquipamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Esteira", "Exaustor", "Computador" }));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -111,15 +122,15 @@ public class FormManutencoes extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbEquipamento, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfData, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -127,9 +138,9 @@ public class FormManutencoes extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField6))))
+                            .addComponent(tfCusto, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                            .addComponent(tfTotal)
+                            .addComponent(tfTempo))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -138,41 +149,41 @@ public class FormManutencoes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbEquipamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfTempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Cadastrar");
+        btnCadastrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCadastrar.setText("Cadastrar");
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setText("Buscar");
+        btnBuscar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnBuscar.setText("Buscar");
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setText("Alterar");
+        btnAlterar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAlterar.setText("Alterar");
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton5.setText("Excluir");
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnExcluir.setText("Excluir");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -181,23 +192,23 @@ public class FormManutencoes extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(62, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnCadastrar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnBuscar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnAlterar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(btnExcluir)
                 .addGap(45, 45, 45))
         );
 
@@ -248,7 +259,171 @@ public class FormManutencoes extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+
+		btnCadastrar.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cadastrar();
+			}
+		});
+
+		btnBuscar.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				buscar();
+			}
+		});
+
+		btnAlterar.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				alterar();
+			}
+		});
+
+		btnExcluir.addActionListener((ActionListener) new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				excluir();
+			}
+		});
+
+		tfCusto.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void warn() {
+
+				try {
+					double custo = Double.parseDouble(tfCusto.getText().replace(",", "."));
+
+					tfTotal.setText(String.format("%.2f", custo * Double.parseDouble(tfTempo.getText().replace(",", "."))));
+
+				} catch (Exception e) {
+					if (tfCusto.getText().length() == 0) {
+						tfTotal.setText("");
+					} else {
+						tfTotal.setText("Calculando...");
+					}
+
+				}
+
+			}
+		});
+    }// </editor-fold>     
+    
+    private void cadastrar() {
+		if (tfData.getText().length() != 0 || tfCusto.getText().length() != 0 || tfTempo.getText().length() != 0
+				|| tfTotal.getText().length() != 0) {
+			ProcessaManutencoes.manutencoes.add(new Manutencao(ProcessaManutencoes.manutencoes.get(ProcessaManutencoes.manutencoes.size() - 1).getId() + 1,
+					sdf.parse(tfData.getText()),
+					cbEquipamento.getSelectedItem().toString(),
+					Double.parseDouble(tfCusto.getText().replace(",", ".")),
+					Double.parseDouble(tfTempo.getText().replace(",", ".")));
+			ProcessaManutencoes.salvar();
+			model.refresh();
+			jTable1.setModel(model = new ManutencaoTableModel(ProcessaManutencoes.manutencoes));
+
+			resetInputs();
+		}
+	}
+
+	private void buscar() {
+		String text = JOptionPane.showInputDialog(this, "Digite o ID do produto a ser buscado");
+
+		try {
+			int id = Integer.parseInt(text);
+
+			for (Produto p : ProcessaManutencoes.manutencoes) {
+				if (id == p.getId()) {
+					tfId.setText("" + id);
+					tfData.setText(p.getNome());
+					tfCusto.setText(String.format("%.2f", p.getpCusto()));
+					tfTempo.setText(String.format("%.2f", p.getpVenda()));
+					tfTotal.setText(String.format("%.2f", p.getLucro()));
+					tfEstoque.setText(p.getEstoque());
+
+					btnCadastrar.setEnabled(false);
+					btnAlterar.setEnabled(true);
+					btnExcluir.setEnabled(true);
+				}
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void alterar() {
+		if (tfData.getText().length() != 0 || tfCusto.getText().length() != 0 || tfTempo.getText().length() != 0
+				|| tfTotal.getText().length() != 0 || tfEstoque.getText().length() != 0) {
+
+			int indice = -1;
+
+			for (Produto p : ProcessaManutencoes.manutencoes) {
+				if (Integer.parseInt(tfId.getText()) == p.getId()) {
+					indice = ProcessaManutencoes.manutencoes.indexOf(p);
+				}
+			}
+
+			ProcessaManutencoes.manutencoes.get(indice).setNome(tfData.getText());
+			ProcessaManutencoes.manutencoes.get(indice).setpCusto(Double.parseDouble(tfCusto.getText().replace(",", ".")));
+			ProcessaManutencoes.manutencoes.get(indice).setpVenda(Double.parseDouble(tfTempo.getText().replace(",", ".")));
+			ProcessaManutencoes.manutencoes.get(indice).setLucro(Double.parseDouble(tfTotal.getText().replace(",", ".")));
+			ProcessaManutencoes.manutencoes.get(indice).setEstoque(tfEstoque.getText());
+
+			ProcessaManutencoes.salvar();
+			model.refresh();
+			jTable1.setModel(model = new ProdTableModel(ProcessaManutencoes.manutencoes));
+
+			btnCadastrar.setEnabled(true);
+			btnAlterar.setEnabled(false);
+			btnExcluir.setEnabled(false);
+
+			resetInputs();
+		}
+	}
+
+	private void excluir() {
+		if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse Produto?") == 0) {
+			Produto prodTemp = null;
+			for (Produto p : ProcessaManutencoes.manutencoes) {
+				if (p.getId() == Integer.parseInt(tfId.getText())) {
+					prodTemp = p;
+				}
+			}
+
+			ProcessaManutencoes.manutencoes.remove(ProcessaManutencoes.manutencoes.indexOf(prodTemp));
+
+			ProcessaManutencoes.salvar();
+			resetInputs();
+
+			btnCadastrar.setEnabled(true);
+			btnAlterar.setEnabled(false);
+			btnExcluir.setEnabled(false);
+			model.refresh();
+			jTable1.setModel(model = new ProdTableModel(ProcessaManutencoes.manutencoes));
+		}
+	}
+
+	private void resetInputs() {
+		tfData.setText("");
+		tfCusto.setText("");
+		tfTempo.setText("");
+		tfTotal.setText("");
+		tfEstoque.setText("");
+
+		tfId.setText("" + (ProcessaManutencoes.manutencoes.get(ProcessaManutencoes.manutencoes.size() - 1).getId() + 1));
+	}
 
     /**
      * @param args the command line arguments
@@ -288,13 +463,13 @@ public class FormManutencoes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cbEquipamento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -306,10 +481,10 @@ public class FormManutencoes extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField tfData;
+    private javax.swing.JTextField tfId;
+    private javax.swing.JTextField tfCusto;
+    private javax.swing.JTextField tfTotal;
+    private javax.swing.JTextField tfTempo;
     // End of variables declaration                   
 }

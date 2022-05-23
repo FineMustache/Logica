@@ -79,7 +79,7 @@ public class ManutencaoTableModel extends AbstractTableModel {
 	        case COLUNA_ID:
 	            return manutencao.getId();
 	        case COLUNA_DATA:
-	            return manutencao.getData();
+	            return new SimpleDateFormat("dd/MM/yyyy").format(manutencao.getData());
 	        case COLUNA_EQUIPAMENTO:
 	            return manutencao.getEquipamento();
 	        case COLUNA_CUSTO:
