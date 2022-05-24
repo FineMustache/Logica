@@ -6,8 +6,10 @@ package viewers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -57,7 +59,9 @@ public class FormManutencoes extends javax.swing.JFrame {
         cbEquipamento = new javax.swing.JComboBox<>();
         tfId = new javax.swing.JTextField();
         tfId.setEnabled(false);
-        tfId.setText(String.format("%d", ProcessaManutencoes.manutencoes.size() + 1));
+        tfId.setText(String.format("%d", ProcessaManutencoes.manutencoes.get(ProcessaManutencoes.manutencoes.size() - 1).getId() + 1));
+        
+        
         jPanel1 = new javax.swing.JPanel();
         btnCadastrar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -263,7 +267,11 @@ public class FormManutencoes extends javax.swing.JFrame {
 		btnCadastrar.addActionListener((ActionListener) new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cadastrar();
+				try {
+					cadastrar();
+				} catch (Exception a) {
+					System.out.println(a.toString());
+				}
 			}
 		});
 
@@ -319,16 +327,62 @@ public class FormManutencoes extends javax.swing.JFrame {
 
 			}
 		});
+		
+		tfTempo.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void warn() {
+
+				try {
+					double custo = Double.parseDouble(tfCusto.getText().replace(",", "."));
+
+					tfTotal.setText(String.format("%.2f", custo * Double.parseDouble(tfTempo.getText().replace(",", "."))));
+
+				} catch (Exception e) {
+					if (tfCusto.getText().length() == 0) {
+						tfTotal.setText("");
+					} else {
+						tfTotal.setText("Calculando...");
+					}
+
+				}
+
+			}
+		});
     }// </editor-fold>     
     
-    private void cadastrar() {
+    private int getEquipamentoIndex(String equip) {
+    	switch (equip) {
+		case "Esteira":
+			return 0;
+		case "Exaustor":
+			return 1;
+		case "Computador":
+			return 2;
+
+		default:
+			return -1;
+		}
+    }
+    
+    private void cadastrar() throws NumberFormatException, ParseException {
 		if (tfData.getText().length() != 0 || tfCusto.getText().length() != 0 || tfTempo.getText().length() != 0
 				|| tfTotal.getText().length() != 0) {
 			ProcessaManutencoes.manutencoes.add(new Manutencao(ProcessaManutencoes.manutencoes.get(ProcessaManutencoes.manutencoes.size() - 1).getId() + 1,
 					sdf.parse(tfData.getText()),
 					cbEquipamento.getSelectedItem().toString(),
 					Double.parseDouble(tfCusto.getText().replace(",", ".")),
-					Double.parseDouble(tfTempo.getText().replace(",", ".")));
+					Double.parseDouble(tfTempo.getText().replace(",", "."))));
 			ProcessaManutencoes.salvar();
 			model.refresh();
 			jTable1.setModel(model = new ManutencaoTableModel(ProcessaManutencoes.manutencoes));
@@ -338,19 +392,19 @@ public class FormManutencoes extends javax.swing.JFrame {
 	}
 
 	private void buscar() {
-		String text = JOptionPane.showInputDialog(this, "Digite o ID do produto a ser buscado");
+		String text = JOptionPane.showInputDialog(this, "Digite o ID da manutenção a ser buscada");
 
 		try {
 			int id = Integer.parseInt(text);
 
-			for (Produto p : ProcessaManutencoes.manutencoes) {
-				if (id == p.getId()) {
+			for (Manutencao m : ProcessaManutencoes.manutencoes) {
+				if (id == m.getId()) {
 					tfId.setText("" + id);
-					tfData.setText(p.getNome());
-					tfCusto.setText(String.format("%.2f", p.getpCusto()));
-					tfTempo.setText(String.format("%.2f", p.getpVenda()));
-					tfTotal.setText(String.format("%.2f", p.getLucro()));
-					tfEstoque.setText(p.getEstoque());
+					tfData.setText(sdf.format(m.getData()));
+					cbEquipamento.setSelectedIndex(getEquipamentoIndex(m.getEquipamento()));
+					tfCusto.setText(String.format("%.2f", m.getCustoHora()));
+					tfTempo.setText(String.format("%.2f", m.getTempoGasto()));
+					tfTotal.setText(String.format("%.2f", m.getTotal()));
 
 					btnCadastrar.setEnabled(false);
 					btnAlterar.setEnabled(true);
@@ -365,25 +419,27 @@ public class FormManutencoes extends javax.swing.JFrame {
 
 	private void alterar() {
 		if (tfData.getText().length() != 0 || tfCusto.getText().length() != 0 || tfTempo.getText().length() != 0
-				|| tfTotal.getText().length() != 0 || tfEstoque.getText().length() != 0) {
+				|| tfTotal.getText().length() != 0) {
 
 			int indice = -1;
 
-			for (Produto p : ProcessaManutencoes.manutencoes) {
-				if (Integer.parseInt(tfId.getText()) == p.getId()) {
-					indice = ProcessaManutencoes.manutencoes.indexOf(p);
+			for (Manutencao m : ProcessaManutencoes.manutencoes) {
+				if (Integer.parseInt(tfId.getText()) == m.getId()) {
+					indice = ProcessaManutencoes.manutencoes.indexOf(m);
 				}
 			}
 
-			ProcessaManutencoes.manutencoes.get(indice).setNome(tfData.getText());
-			ProcessaManutencoes.manutencoes.get(indice).setpCusto(Double.parseDouble(tfCusto.getText().replace(",", ".")));
-			ProcessaManutencoes.manutencoes.get(indice).setpVenda(Double.parseDouble(tfTempo.getText().replace(",", ".")));
-			ProcessaManutencoes.manutencoes.get(indice).setLucro(Double.parseDouble(tfTotal.getText().replace(",", ".")));
-			ProcessaManutencoes.manutencoes.get(indice).setEstoque(tfEstoque.getText());
+			try {
+				ProcessaManutencoes.manutencoes.get(indice).setData(sdf.parse(tfData.getText()));
+			} catch (ParseException e) {
+				System.out.println(e.toString());
+			}
+			ProcessaManutencoes.manutencoes.get(indice).setCustoHora(Double.parseDouble(tfCusto.getText().replace(",", ".")));
+			ProcessaManutencoes.manutencoes.get(indice).setTempoGasto(Double.parseDouble(tfTempo.getText().replace(",", ".")));
 
 			ProcessaManutencoes.salvar();
 			model.refresh();
-			jTable1.setModel(model = new ProdTableModel(ProcessaManutencoes.manutencoes));
+			jTable1.setModel(model = new ManutencaoTableModel(ProcessaManutencoes.manutencoes));
 
 			btnCadastrar.setEnabled(true);
 			btnAlterar.setEnabled(false);
@@ -394,15 +450,15 @@ public class FormManutencoes extends javax.swing.JFrame {
 	}
 
 	private void excluir() {
-		if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse Produto?") == 0) {
-			Produto prodTemp = null;
-			for (Produto p : ProcessaManutencoes.manutencoes) {
-				if (p.getId() == Integer.parseInt(tfId.getText())) {
-					prodTemp = p;
+		if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse registro?") == 0) {
+			Manutencao manTemp = null;
+			for (Manutencao m : ProcessaManutencoes.manutencoes) {
+				if (m.getId() == Integer.parseInt(tfId.getText())) {
+					manTemp = m;
 				}
 			}
 
-			ProcessaManutencoes.manutencoes.remove(ProcessaManutencoes.manutencoes.indexOf(prodTemp));
+			ProcessaManutencoes.manutencoes.remove(ProcessaManutencoes.manutencoes.indexOf(manTemp));
 
 			ProcessaManutencoes.salvar();
 			resetInputs();
@@ -411,7 +467,7 @@ public class FormManutencoes extends javax.swing.JFrame {
 			btnAlterar.setEnabled(false);
 			btnExcluir.setEnabled(false);
 			model.refresh();
-			jTable1.setModel(model = new ProdTableModel(ProcessaManutencoes.manutencoes));
+			jTable1.setModel(model = new ManutencaoTableModel(ProcessaManutencoes.manutencoes));
 		}
 	}
 
@@ -420,7 +476,6 @@ public class FormManutencoes extends javax.swing.JFrame {
 		tfCusto.setText("");
 		tfTempo.setText("");
 		tfTotal.setText("");
-		tfEstoque.setText("");
 
 		tfId.setText("" + (ProcessaManutencoes.manutencoes.get(ProcessaManutencoes.manutencoes.size() - 1).getId() + 1));
 	}

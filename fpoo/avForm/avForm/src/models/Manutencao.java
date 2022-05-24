@@ -106,7 +106,7 @@ public class Manutencao {
 	}
 	
 	public String toCSV() {
-		return id + ";" + data + ";" + equipamento + ";" + custoHora + ";" + tempoGasto;
+		return id + ";" + sdf.format(data) + ";" + equipamento + ";" + custoHora + ";" + tempoGasto;
 	}
 		
 }
