@@ -10,13 +10,16 @@ import javax.swing.event.DocumentListener;
 
 import controle.ProdProcess;
 import controle.VendProcess;
-import modelo.ProdTableModel;
 import modelo.Produto;
 import modelo.Venda;
 import modelo.VendaTableModel;
 
 public class VendCRUD extends javax.swing.JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private VendaTableModel model;
 
 	public VendCRUD() {
@@ -24,7 +27,6 @@ public class VendCRUD extends javax.swing.JFrame {
 		initComponents();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void initComponents() {
 
 		jScrollPane1 = new javax.swing.JScrollPane();
@@ -290,22 +292,23 @@ public class VendCRUD extends javax.swing.JFrame {
 		});
 	}
 	
-	private String getPag(int indice) {
-		switch (indice) {
-		case 0:
-			return "Dinheiro";
+	
+	private int getIndPag(String pag) {
+		switch (pag) {
+		case "Dinheiro":
+			return 0;
 			
-		case 1:
-			return "Crédito";
+		case "Crédito":
+			return 1;
 			
-		case 2:
-			return "Débito";
+		case "Débito":
+			return 2;
 			
-		case 3:
-			return "Pix";
+		case "Pix":
+			return 3;
 			
 		default:
-			return "Outro";
+			return -1;
 		}
 	}
 
@@ -317,15 +320,15 @@ public class VendCRUD extends javax.swing.JFrame {
 	
 	private void cadastrar() {
 		if (tfIdProd.getText().length() != 0 || tfQtde.getText().length() != 0 || tfPTotal.getText().length() != 0) {
-			String produto = "";
+			String venda = "";
 			for (Produto p : ProdProcess.produtos) {
 				if(Integer.parseInt(tfIdProd.getText()) == p.getId()) {
-					produto = p.getNome();
+					venda = p.getNome();
 				}
 			}
 			
-			if (JOptionPane.showConfirmDialog(this, "Deseja mesmo cadastrar a venda do produto " + produto + "?") == 0) {
-				VendProcess.vendas.add(new Venda(VendProcess.vendas.get(VendProcess.vendas.size() - 1).getId() + 1, Integer.parseInt(tfIdProd.getText()), Integer.parseInt(tfQtde.getText()), Double.parseDouble(tfPTotal.getText().replace(",", ".")), getPag(cbPag.getSelectedIndex())));
+			if (JOptionPane.showConfirmDialog(this, "Deseja mesmo cadastrar a venda do produto " + venda + "?") == 0) {
+				VendProcess.vendas.add(new Venda(VendProcess.vendas.get(VendProcess.vendas.size() - 1).getId() + 1, Integer.parseInt(tfIdProd.getText()), Integer.parseInt(tfQtde.getText()), Double.parseDouble(tfPTotal.getText().replace(",", ".")), cbPag.getSelectedItem().toString()));
 				model.refresh();
 				jTable1.setModel(model = new VendaTableModel(VendProcess.vendas));
 				VendProcess.salvar();
@@ -344,14 +347,13 @@ public class VendCRUD extends javax.swing.JFrame {
 		try {
 			int id = Integer.parseInt(text);
 
-			for (Produto p : ProdProcess.produtos) {
-				if (id == p.getId()) {
+			for (Venda v : VendProcess.vendas) {
+				if (id == v.getId()) {
 					tfId.setText("" + id);
-					tfNome.setText(p.getNome());
-					tfPCusto.setText(String.format("%.2f", p.getpCusto()));
-					tfPVenda.setText(String.format("%.2f", p.getpVenda()));
-					tfLucro.setText(String.format("%.2f", p.getLucro()));
-					tfEstoque.setText(p.getEstoque());
+					tfIdProd.setText("" + v.getIdProd());
+					tfQtde.setText(String.format("" + v.getQtde()));
+					tfPTotal.setText(String.format("%.2f", v.getpTotal()));
+					cbPag.setSelectedIndex(getIndPag(v.getPag()));
 
 					btnCadastrar.setEnabled(false);
 					btnAlterar.setEnabled(true);
@@ -365,26 +367,24 @@ public class VendCRUD extends javax.swing.JFrame {
 	}
 
 	private void alterar() {
-		if (tfNome.getText().length() != 0 || tfPCusto.getText().length() != 0 || tfPVenda.getText().length() != 0
-				|| tfLucro.getText().length() != 0 || tfEstoque.getText().length() != 0) {
+		if (tfIdProd.getText().length() != 0 || tfQtde.getText().length() != 0 || tfPTotal.getText().length() != 0) {
 
 			int indice = -1;
 
-			for (Produto p : ProdProcess.produtos) {
-				if (Integer.parseInt(tfId.getText()) == p.getId()) {
-					indice = ProdProcess.produtos.indexOf(p);
+			for (Venda v : VendProcess.vendas) {
+				if (Integer.parseInt(tfId.getText()) == v.getId()) {
+					indice = VendProcess.vendas.indexOf(v);
 				}
 			}
 
-			ProdProcess.produtos.get(indice).setNome(tfNome.getText());
-			ProdProcess.produtos.get(indice).setpCusto(Double.parseDouble(tfPCusto.getText().replace(",", ".")));
-			ProdProcess.produtos.get(indice).setpVenda(Double.parseDouble(tfPVenda.getText().replace(",", ".")));
-			ProdProcess.produtos.get(indice).setLucro(Double.parseDouble(tfLucro.getText().replace(",", ".")));
-			ProdProcess.produtos.get(indice).setEstoque(tfEstoque.getText());
+			VendProcess.vendas.get(indice).setIdProd(Integer.parseInt(tfIdProd.getText()));
+			VendProcess.vendas.get(indice).setQtde(Integer.parseInt(tfQtde.getText()));
+			VendProcess.vendas.get(indice).setpTotal(Double.parseDouble(tfPTotal.getText().replace(",", ".")));
+			VendProcess.vendas.get(indice).setPag(cbPag.getSelectedItem().toString());
 
-			ProdProcess.salvar();
+			VendProcess.salvar();
 			model.refresh();
-			jTable1.setModel(model = new ProdTableModel(ProdProcess.produtos));
+			jTable1.setModel(model = new VendaTableModel(VendProcess.vendas));
 
 			btnCadastrar.setEnabled(true);
 			btnAlterar.setEnabled(false);
@@ -395,24 +395,23 @@ public class VendCRUD extends javax.swing.JFrame {
 	}
 
 	private void excluir() {
-		if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse Produto?") == 0) {
-			Produto prodTemp = null;
-			for (Produto p : ProdProcess.produtos) {
-				if (p.getId() == Integer.parseInt(tfId.getText())) {
-					prodTemp = p;
+		if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR essa Venda?") == 0) {
+			Venda vendaTemp = null;
+			for (Venda v : VendProcess.vendas) {
+				if (v.getId() == Integer.parseInt(tfId.getText())) {
+					vendaTemp = v;
 				}
 			}
+			VendProcess.vendas.remove(VendProcess.vendas.indexOf(vendaTemp));
 
-			ProdProcess.produtos.remove(ProdProcess.produtos.indexOf(prodTemp));
-
-			ProdProcess.salvar();
+			VendProcess.salvar();
 			resetInputs();
 
 			btnCadastrar.setEnabled(true);
 			btnAlterar.setEnabled(false);
 			btnExcluir.setEnabled(false);
 			model.refresh();
-			jTable1.setModel(model = new ProdTableModel(ProdProcess.produtos));
+			jTable1.setModel(model = new VendaTableModel(VendProcess.vendas));
 		}
 	}
 

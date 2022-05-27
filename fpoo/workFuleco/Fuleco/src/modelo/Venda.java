@@ -62,7 +62,6 @@ public class Venda {
 	}
 
 	public void setPag(String pag) {
-		System.out.println(pag);
 		this.pag = pag;
 	}
 

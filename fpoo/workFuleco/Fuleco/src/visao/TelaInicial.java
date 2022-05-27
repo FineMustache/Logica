@@ -1,6 +1,5 @@
 package visao;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -15,6 +14,11 @@ import controle.VendProcess;
 
 public class TelaInicial extends javax.swing.JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TelaInicial() throws IOException {
 		initComponents();
 	}
@@ -22,7 +26,6 @@ public class TelaInicial extends javax.swing.JFrame {
 	private BufferedImage myPicture = ImageIO.read(new File("Imagens\\fuleco.png"));
 	private ImageIcon icon;
 
-	@SuppressWarnings("unchecked")
 	private void initComponents() {
 
 		jPanel1 = new javax.swing.JPanel();

@@ -3,7 +3,6 @@ package visao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -15,6 +14,10 @@ import modelo.Produto;
 
 public class ProdCRUD extends javax.swing.JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ProdTableModel model;
 
 	public ProdCRUD() {
@@ -22,7 +25,6 @@ public class ProdCRUD extends javax.swing.JFrame {
 		initComponents();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void initComponents() {
 
 		jScrollPane1 = new javax.swing.JScrollPane();
